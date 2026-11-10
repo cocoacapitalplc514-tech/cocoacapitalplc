@@ -19,6 +19,8 @@ node_modules/
 
 # Generated view-only page images. Produced by scripts/render-transaction-documents.mjs.
 /public/documents/view-only/
+# Copied from content/ by the same script when the prospectus is published.
+/public/documents/cocoa-capital-programme-prospectus.pdf
 
 # production
 /build
