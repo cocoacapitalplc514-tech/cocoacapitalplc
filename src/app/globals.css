@@ -1,35 +1,36 @@
 @import "tailwindcss";
 
 :root {
-  --cocoa: #2c1b12;
-  --forest: #355e3b;
-  --gold: #c89b3c;
-  --cream: #faf8f4;
-  --dark: #111111;
+  --cocoa: #3b2418;
+  --forest: #203d2a;
+  --gold: #b88a35;
+  --cream: #faf8f2;
+  --soft-grey: #f4f3f0;
+  --dark: #161616;
   --white: #ffffff;
-  --muted: #3d322c;
-  --border: rgba(44, 27, 18, 0.08);
-  --shadow: 0 12px 40px rgba(44, 27, 18, 0.08);
-  --shadow-lg: 0 24px 60px rgba(44, 27, 18, 0.12);
-  --radius: 0.75rem;
+  --muted: #4a3b32;
+  --border: #ddd9d2;
+  --shadow-lg: 0 18px 48px rgba(59, 36, 24, 0.1);
+  --radius: 0.5rem;
   --background: var(--cream);
   --foreground: var(--cocoa);
-  /* Single source of truth for the fixed header height, so heroes and the
-     mobile menu panel can offset themselves without duplicating magic numbers. */
-  --nav-h: 4rem;
-  /* Minimum comfortable tap area on touch screens. */
+  --nav-h: 4.25rem;
+  --util-h: 0rem;
+  /* Full fixed-header height: utility strip + primary nav row. */
+  --header-h: calc(var(--util-h) + var(--nav-h));
   --tap: 2.75rem;
 }
 
 @media (min-width: 640px) {
   :root {
-    --nav-h: 4.5rem;
+    --nav-h: 4.75rem;
   }
 }
 
 @media (min-width: 1024px) {
   :root {
-    --nav-h: 5.25rem;
+    --nav-h: 5rem;
+    --util-h: 2.25rem;
   }
 }
 
@@ -40,18 +41,16 @@
   --color-forest: var(--forest);
   --color-gold: var(--gold);
   --color-cream: var(--cream);
+  --color-soft-grey: var(--soft-grey);
   --color-dark: var(--dark);
   --color-muted: var(--muted);
   --color-border: var(--border);
   --font-sans: var(--font-body);
   --font-serif: var(--font-cormorant);
   --radius-lg: var(--radius);
-  --shadow-soft: var(--shadow);
   --shadow-elevated: var(--shadow-lg);
 }
 
-/* Base element styling must live in @layer base so Tailwind utilities
-   (font-sans, font-bold, tracking-*) can still override it. */
 @layer base {
   * {
     box-sizing: border-box;
@@ -59,9 +58,7 @@
 
   html {
     scroll-behavior: smooth;
-    /* Anchor targets clear the fixed header instead of hiding beneath it. */
-    scroll-padding-top: calc(var(--nav-h) + 1rem);
-    /* Stop iOS Safari inflating type in landscape. */
+    scroll-padding-top: calc(var(--header-h) + 1rem);
     -webkit-text-size-adjust: 100%;
   }
 
@@ -74,13 +71,9 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
-    /* A single stray wide element should never let the whole page pan sideways.
-       `clip` rather than `hidden` because `hidden` would make body a scroll
-       container and break the `lg:sticky` columns. */
     overflow-x: clip;
   }
 
-  /* Long unbroken strings (emails, URLs) must not push narrow layouts wide. */
   p,
   li,
   a,
@@ -93,7 +86,6 @@
     overflow-wrap: break-word;
   }
 
-  /* Grey flash on tap looks broken against the cream palette. */
   a,
   button {
     -webkit-tap-highlight-color: transparent;
@@ -109,15 +101,13 @@
     color: var(--cocoa);
   }
 
-  /* Display sizes carry the elegance; tighter tracking reads better large. */
   h1,
   h2 {
-    font-weight: 500;
-    letter-spacing: -0.02em;
-    line-height: 1.08;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    line-height: 1.12;
   }
 
-  /* Cormorant is delicate below ~28px — more weight and air keeps it legible. */
   h3,
   h4,
   h5,
@@ -157,73 +147,71 @@
   }
 }
 
-/* Vertical rhythm starts compact so a small screen shows real content, not
-   chrome, then opens up as the viewport earns the whitespace. */
 .section-pad {
-  padding-block: 3.5rem;
+  padding-block: 3.25rem;
 }
 
 @media (min-width: 640px) {
   .section-pad {
-    padding-block: 5rem;
+    padding-block: 4rem;
   }
 }
 
 @media (min-width: 768px) {
   .section-pad {
-    padding-block: 6.5rem;
+    padding-block: 4.75rem;
   }
 }
 
 @media (min-width: 1024px) {
   .section-pad {
-    padding-block: 8rem;
+    padding-block: 5.5rem;
   }
 }
 
 .heading-xl {
-  font-size: 2.25rem;
-  line-height: 1.1;
+  font-size: 2rem;
+  line-height: 1.12;
 }
 
 @media (min-width: 640px) {
+  .heading-xl {
+    font-size: 2.375rem;
+  }
+}
+
+@media (min-width: 768px) {
   .heading-xl {
     font-size: 2.75rem;
   }
 }
 
-@media (min-width: 768px) {
-  .heading-xl {
-    font-size: 3rem;
-  }
-}
-
 @media (min-width: 1024px) {
   .heading-xl {
-    font-size: 4rem;
+    font-size: 3.125rem;
   }
 }
 
 .heading-lg {
-  font-size: 1.875rem;
-  line-height: 1.15;
+  font-size: 1.625rem;
+  line-height: 1.18;
 }
 
 @media (min-width: 640px) {
   .heading-lg {
-    font-size: 2.25rem;
+    font-size: 1.875rem;
   }
 }
 
 @media (min-width: 768px) {
   .heading-lg {
-    font-size: 2.5rem;
+    font-size: 2.125rem;
   }
 }
 
 @media (min-width: 1024px) {
   .heading-lg {
-    font-size: 3.25rem;
+    font-size: 2.25rem;
   }
 }
 
@@ -232,31 +220,25 @@
 }
 
 @layer components {
-  /* Supporting copy — 15px reads better than 14px at these line lengths. */
   .copy {
-    font-size: 0.9375rem;
+    font-size: 1rem;
     line-height: 1.7;
   }
 
-  /* Uppercase micro-labels need extra weight to survive the wide tracking.
-     Held at 12px on phones, where 11px stops being comfortably readable. */
   .label {
     font-size: 0.75rem;
     font-weight: 600;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
   }
 
   @media (min-width: 1024px) {
     .label {
       font-size: 0.6875rem;
-      letter-spacing: 0.18em;
+      letter-spacing: 0.16em;
     }
   }
 
-  /* Inline text links are the weak point for touch: they carry no padding of
-     their own. Give them a full tap area on phones, release it on pointer
-     devices where the text box alone is an easy target. */
   .tap-target {
     display: inline-flex;
     align-items: center;
@@ -276,7 +258,6 @@
   background: var(--gold);
 }
 
-/* Restrained Adinkra-inspired diamond motif — decorative texture only */
 .adinkra-motif {
   background-image: repeating-linear-gradient(
       45deg,
@@ -287,14 +268,35 @@
   background-size: 28px 28px;
 }
 
-.chapter-rule {
-  height: 1px;
-  background: linear-gradient(
-    to right,
-    transparent,
-    color-mix(in srgb, var(--gold) 55%, transparent),
-    transparent
-  );
+.view-only-pages {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.print-block-message {
+  display: none;
+}
+
+@media print {
+  body.view-only-active * {
+    visibility: hidden !important;
+  }
+
+  body.view-only-active .print-block-message {
+    display: block !important;
+    visibility: visible !important;
+    position: absolute;
+    inset: 1.5rem auto auto 1.5rem;
+    color: #161616;
+    font-family: Georgia, serif;
+    font-size: 14pt;
+  }
+
+  body.view-only-active img,
+  body.view-only-active .view-only-pages {
+    display: none !important;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

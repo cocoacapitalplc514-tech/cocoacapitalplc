@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /documents/view-only/
+
+Sitemap: https://www.cocoacapital.com/sitemap.xml

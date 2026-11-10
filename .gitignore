@@ -1,7 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
+node_modules/
 /.pnp
 .pnp.*
 .yarn/*
@@ -16,6 +16,9 @@
 # next.js
 /.next/
 /out/
+
+# Generated view-only page images. Produced by scripts/render-transaction-documents.mjs.
+/public/documents/view-only/
 
 # production
 /build
@@ -32,6 +35,18 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
+
+# Sanity Studio build output
+/studio/dist/
+/studio/.sanity/
+
+# Transaction PDFs downloaded from Sanity by scripts/sync-sanity.mjs
+/.cms-cache/
+
+# Unpublished source PDFs (prospectus, transaction agreements). The repository
+# is public, so these must never be committed — CI builds take them from Sanity.
+/content/
 
 # vercel
 .vercel

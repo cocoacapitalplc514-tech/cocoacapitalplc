@@ -4,9 +4,16 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
+    "build": "node scripts/sync-sanity.mjs && node scripts/render-transaction-documents.mjs && node scripts/generate-redirects.mjs && next build --turbopack",
+    "deploy": "npm run build && node scripts/deploy-ftp.mjs",
+    "deploy:upload": "node scripts/deploy-ftp.mjs",
+    "cms:sync": "node scripts/sync-sanity.mjs",
+    "studio": "npm --prefix studio run dev",
+    "studio:deploy": "npm --prefix studio run deploy",
+    "render:documents": "node scripts/render-transaction-documents.mjs",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "redirects": "node scripts/generate-redirects.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.6.0",
@@ -17,7 +24,6 @@
     "@radix-ui/react-slot": "^1.3.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "gsap": "^3.15.0",
     "lucide-react": "^0.475.0",
     "next": "15.5.22",
     "react": "19.1.0",
@@ -28,13 +34,15 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@sanity/client": "^8.15.0",
     "@tailwindcss/postcss": "^4",
-    "@types/gsap": "^1.20.2",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "basic-ftp": "^6.2.6",
     "eslint": "^9",
     "eslint-config-next": "15.5.22",
+    "mupdf": "^1.28.1",
     "sharp": "^0.35.3",
     "tailwindcss": "^4",
     "typescript": "^5"

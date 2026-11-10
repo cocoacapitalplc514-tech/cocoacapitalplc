@@ -1,0 +1,4 @@
+/documents/view-only/*
+  X-Robots-Tag: noindex, noimageindex
+  Content-Disposition: inline
+  X-Content-Type-Options: nosniff

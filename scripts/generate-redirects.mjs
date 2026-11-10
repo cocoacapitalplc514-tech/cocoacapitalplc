@@ -1,0 +1,205 @@
+import fs from "node:fs/promises";
+import path from "node:path";
+
+/**
+ * Emits static redirect stubs into public/ for URLs that no longer exist.
+ *
+ * The site is a static export (`output: "export"`), so there is no middleware
+ * and no server-side `redirects()` — a removed route just 404s. These stubs are
+ * the portable fallback: a meta refresh plus a scripted `location.replace`,
+ * marked `noindex` with a canonical pointing at the live page.
+ *
+ * A host-level 301 is better for SEO where the platform supports it. The
+ * `_redirects` file emitted alongside these gives that automatically on
+ * Netlify and Cloudflare Pages, and `.htaccess` does the same on Apache
+ * (Bluehost).
+ *
+ * Run with: node scripts/generate-redirects.mjs
+ */
+
+const SITE = "https://www.cocoacapital.com";
+const OUT_DIR = "public";
+
+/**
+ * The Programme section was consolidated from seven pages into one, so each
+ * old page maps to the corresponding section anchor on the new page.
+ */
+const PROGRAMME_REDIRECTS = {
+  "programme": "/investor-relations/programme/",
+  "programme/how-it-works": "/investor-relations/programme/#how-it-works",
+  "programme/use-of-proceeds": "/investor-relations/programme/#use-of-proceeds",
+  "programme/commercial-paper": "/investor-relations/programme/#instruments",
+  "programme/bonds": "/investor-relations/programme/#instruments",
+  "programme/repayment-structure": "/investor-relations/programme/#repayment",
+  "programme/risk-management": "/investor-relations/programme/#risk",
+};
+
+/**
+ * Market & Cocoa was retired outright — the issuer does not maintain sector
+ * information. There is no successor page, so these land on the homepage,
+ * whose footer carries the COCOBOD and GFIM links. Insights was a commentary
+ * feed, so News is its closest equivalent.
+ */
+const MARKET_REDIRECTS = {
+  "market-cocoa": "/",
+  "market-cocoa/ghana-cocoa-sector": "/",
+  "market-cocoa/capital-markets": "/",
+  "market-cocoa/insights": "/news/",
+};
+
+/**
+ * Pages from the pre-redesign site. External reviewers hold links to these, so
+ * they are worth catching even though the pages were removed by request.
+ * Funding routes land on About, which states explicitly that the issuer does
+ * not provide funding solutions.
+ */
+const LEGACY_REDIRECTS = {
+  "investor-centre": "/investor-relations/",
+  "investments": "/investor-relations/",
+  "investments/how-to-invest": "/investor-relations/",
+  "funding": "/about/",
+  "funding/apply": "/about/",
+  "industry": "/",
+  "careers": "/",
+  "esg": "/",
+};
+
+const REDIRECTS = {
+  ...PROGRAMME_REDIRECTS,
+  ...MARKET_REDIRECTS,
+  ...LEGACY_REDIRECTS,
+};
+
+const escape = (value) =>
+  value.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
+
+function stub(target) {
+  const href = escape(target);
+  // Strip the fragment for the canonical — search engines index the page, not
+  // the anchor.
+  const canonical = escape(`${SITE}${target.split("#")[0]}`);
+
+  return `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Page moved — Cocoa Capital PLC</title>
+    <link rel="canonical" href="${canonical}" />
+    <meta http-equiv="refresh" content="0; url=${href}" />
+    <script>
+      window.location.replace(${JSON.stringify(target)});
+    </script>
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background: #faf8f2;
+        color: #3b2418;
+        font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+        text-align: center;
+        padding: 2rem;
+      }
+      a {
+        color: #203d2a;
+      }
+    </style>
+  </head>
+  <body>
+    <p>
+      This page has moved.
+      <a href="${href}">Continue to Cocoa Capital PLC</a>.
+    </p>
+  </body>
+</html>
+`;
+}
+
+let written = 0;
+
+for (const [from, target] of Object.entries(REDIRECTS)) {
+  const dir = path.join(OUT_DIR, from);
+  await fs.mkdir(dir, { recursive: true });
+  await fs.writeFile(path.join(dir, "index.html"), stub(target), "utf8");
+  written += 1;
+  console.log(`  /${from}/ -> ${target}`);
+}
+
+// Host-level 301s where the platform reads this file; inert everywhere else.
+//
+// These are exact paths, not `/*` subtree rules: several parents have children
+// with different targets (/programme vs /programme/risk-management). Rules are
+// emitted deepest-first because Netlify and Cloudflare Pages match top-down and
+// stop at the first hit — a parent listed first would swallow its children and
+// strip their anchors.
+const redirectsFile = Object.entries(REDIRECTS)
+  .sort(([a], [b]) => b.split("/").length - a.split("/").length)
+  .map(([from, target]) => `/${from}  ${target}  301`)
+  .join("\n");
+
+await fs.writeFile(
+  path.join(OUT_DIR, "_redirects"),
+  `# Generated by scripts/generate-redirects.mjs — do not edit by hand.\n${redirectsFile}\n`,
+  "utf8"
+);
+
+/**
+ * Apache equivalent (Bluehost and other cPanel hosts) of `_redirects` and
+ * `_headers`. NE keeps the `#anchor` in redirect targets from being escaped.
+ */
+const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+const rewriteRules = Object.entries(REDIRECTS)
+  .sort(([a], [b]) => b.split("/").length - a.split("/").length)
+  .map(([from, target]) => `  RewriteRule ^${escapeRegex(from)}/?$ ${target} [R=301,NE,L]`)
+  .join("\n");
+
+/** Parses the Netlify/Cloudflare `_headers` format: a path line, then indented "Name: value" lines. */
+async function readHeaderRules() {
+  const source = await fs.readFile(path.join(OUT_DIR, "_headers"), "utf8").catch(() => "");
+  const rules = [];
+  for (const line of source.split(/\r?\n/)) {
+    if (!line.trim() || line.trim().startsWith("#")) continue;
+    if (!/^\s/.test(line)) {
+      rules.push({ path: line.trim(), headers: [] });
+    } else if (rules.length) {
+      const [name, ...value] = line.trim().split(":");
+      rules.at(-1).headers.push([name.trim(), value.join(":").trim()]);
+    }
+  }
+  return rules;
+}
+
+const headerBlocks = (await readHeaderRules())
+  .map(({ path: pattern, headers }) => {
+    const regex = `^${pattern.split("*").map(escapeRegex).join(".*")}`;
+    const lines = headers
+      .map(([name, value]) => `    Header set ${name} "${value.replace(/"/g, '\\"')}"`)
+      .join("\n");
+    return `  <If "%{REQUEST_URI} =~ m#${regex}#">\n${lines}\n  </If>`;
+  })
+  .join("\n");
+
+const htaccess = `# Generated by scripts/generate-redirects.mjs — do not edit by hand.
+# Apache config for the static export (Bluehost / cPanel).
+
+Options -Indexes
+DirectoryIndex index.html
+ErrorDocument 404 /404.html
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+${rewriteRules}
+</IfModule>
+
+<IfModule mod_headers.c>
+${headerBlocks}
+</IfModule>
+`;
+
+await fs.writeFile(path.join(OUT_DIR, ".htaccess"), htaccess, "utf8");
+
+console.log(`\n${written} redirect stubs written to ${OUT_DIR}/`);

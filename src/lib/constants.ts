@@ -1,344 +1,148 @@
 export const SITE = {
   name: "Cocoa Capital PLC",
   shortName: "Cocoa Capital",
-  tagline: "Financing Ghana's Cocoa Future.",
+  tagline: "Structured capital for Ghana’s cocoa sector.",
   description:
-    "Cocoa Capital PLC is a Ghanaian investment and structured finance company dedicated to financing the cocoa value chain—delivering institutional-grade capital solutions for investors and industry participants.",
+    "Cocoa Capital PLC is a dedicated financing special-purpose vehicle established by COCOBOD. It raises financing through Commercial Paper and Bonds for approved cocoa-sector financing and refinancing purposes under a programme of up to GHS 16.3 billion.",
   url: "https://www.cocoacapital.com",
+  /** Single point of contact — investor, media and general enquiries. */
   email: "info@cocoacapital.com",
-  phone: "+233 30 266 4500",
+  /** The (0) is the national trunk prefix and is omitted from the dial string. */
+  phones: [
+    { label: "+233 (0)302 770 454", tel: "+233302770454" },
+    { label: "777 173", tel: "+233302777173" },
+    { label: "770 618", tel: "+233302770618" },
+  ],
+  hours: "Mon-Fri, 8:00am - 5:00pm",
   address: {
-    street: "No. 15 Independence Avenue",
+    organisation: "KPMG Ghana",
+    street: "Marlin House, 13 Yiyiwa Drive, Abelemkpe",
+    poBox: "P.O. Box GP 242",
     city: "Accra",
     country: "Ghana",
-  },
-  social: {
-    linkedin: "https://www.linkedin.com/company/cocoa-capital-plc",
-    twitter: "https://twitter.com/cocoacapitalgh",
-    youtube: "https://www.youtube.com/@cocoacapitalplc",
+    digitalAddress: "6CQXJQ6P+CW",
+    coordinates: "5.6111° N, -0.21268° W",
+    latitude: 5.6111,
+    longitude: -0.21268,
   },
 } as const;
 
-export const NAV_LINKS = [
-  { label: "Home", href: "/" },
-  { label: "About Us", href: "/about" },
-  { label: "Investments", href: "/investments" },
-  { label: "Funding Solutions", href: "/funding" },
-  { label: "Industry", href: "/industry" },
-  { label: "Investor Centre", href: "/investor-centre" },
+/** Opens the published office location. */
+export const MAPS_URL = `https://www.google.com/maps/search/?api=1&query=${SITE.address.latitude},${SITE.address.longitude}`;
+
+export type NavChild = {
+  label: string;
+  href: string;
+  description?: string;
+};
+
+export type NavItem = {
+  label: string;
+  href: string;
+  children?: NavChild[];
+};
+
+/**
+ * Three sections plus a Downloads action, following the structure of the
+ * institutional issuer sites this site is benchmarked against (E.S.L.A. PLC:
+ * Home / About us / Statistics & Downloads / Investor relations / News).
+ *
+ * The Programme sits under Investor Relations rather than as a section of its
+ * own: describing the securities on offer is a disclosure obligation, not a
+ * product catalogue.
+ */
+export const NAV_ITEMS: NavItem[] = [
+  {
+    label: "About Us",
+    href: "/about",
+    children: [
+      { label: "About Cocoa Capital", href: "/about" },
+      { label: "Our Mandate", href: "/about/mandate" },
+      { label: "Corporate Structure", href: "/about/corporate-structure" },
+      { label: "Board of Directors", href: "/about/board" },
+      { label: "Corporate Manager", href: "/about/corporate-manager" },
+      { label: "Programme Parties", href: "/about/programme-parties" },
+    ],
+  },
+  {
+    label: "Investor Relations",
+    href: "/investor-relations",
+    children: [
+      { label: "Investor Relations", href: "/investor-relations" },
+      { label: "The Programme", href: "/investor-relations/programme" },
+      { label: "Current Issuances", href: "/investor-relations/issuances" },
+      {
+        label: "Pricing Supplements",
+        href: "/investor-relations/pricing-supplements",
+      },
+      {
+        label: "Financial Statements",
+        href: "/investor-relations/financial-statements",
+      },
+      { label: "Credit Ratings", href: "/investor-relations/credit-ratings" },
+      {
+        label: "Investor Presentations",
+        href: "/investor-relations/presentations",
+      },
+      { label: "Announcements", href: "/investor-relations/announcements" },
+      { label: "Investor FAQs", href: "/investor-relations/faqs" },
+    ],
+  },
   { label: "News", href: "/news" },
-  { label: "Careers", href: "/careers" },
-  { label: "Contact", href: "/contact" },
-] as const;
+];
 
-export const STATS = [
-  {
-    value: 2.3,
-    prefix: "GH₵ ",
-    suffix: "B+",
-    label: "Assets Under Management (2024)",
-    decimals: 1,
-  },
-  {
-    value: 5000,
-    prefix: "",
-    suffix: "+",
-    label: "Investors Served",
-    decimals: 0,
-  },
-  {
-    value: 1.7,
-    prefix: "GH₵ ",
-    suffix: "B+",
-    label: "Capital Deployed Since Inception",
-    decimals: 1,
-  },
-  {
-    value: 250000,
-    prefix: "",
-    suffix: "+ MT",
-    label: "Cocoa Financed Since Inception",
-    decimals: 0,
-  },
-] as const;
-
-export const WHAT_WE_DO = [
-  {
-    title: "Investments",
-    description:
-      "Institutional investment products structured around Ghana's cocoa economy, designed for stable, long-horizon returns.",
-    href: "/investments",
-    icon: "trending-up",
-  },
-  {
-    title: "Funding Solutions",
-    description:
-      "Working capital, warehouse, and trade finance facilities tailored to licensed buyers, LBCs, and exporters.",
-    href: "/funding",
-    icon: "building",
-  },
-  {
-    title: "Structured Finance",
-    description:
-      "Bespoke capital structures that mobilise institutional capital into cocoa purchase, logistics, and processing.",
-    href: "/investments/structured-finance",
-    icon: "layers",
-  },
-  {
-    title: "Risk Management",
-    description:
-      "Rigorous credit frameworks, collateral monitoring, and portfolio oversight across every financed transaction.",
-    href: "/about/risk",
-    icon: "shield",
-  },
-  {
-    title: "Sustainability",
-    description:
-      "ESG-aligned capital deployment supporting responsible sourcing, farmer livelihoods, and climate resilience.",
-    href: "/esg",
-    icon: "leaf",
-  },
-] as const;
-
-/** Three pillars shown on the homepage — the full set lives on inner pages. */
-export const HOME_PILLARS = [
-  {
-    title: "Investments",
-    description:
-      "Cocoa-linked instruments structured for stable, long-horizon returns.",
-    href: "/investments",
-    icon: "trending-up",
-  },
-  {
-    title: "Funding Solutions",
-    description:
-      "Working capital, warehouse, and trade finance for licensed buyers and exporters.",
-    href: "/funding",
-    icon: "building",
-  },
-  {
-    title: "Investor Centre",
-    description:
-      "Reports, announcements, and shareholder information in one place.",
-    href: "/investor-centre",
-    icon: "layers",
-  },
-] as const;
-
-/** Quiet credibility markers — replaces a noisy partner marquee. */
-export const TRUST_SIGNALS = [
-  "Incorporated in Ghana",
-  "Accra · Independence Avenue",
-  "Board-Governed",
-  "Audited Annually",
-  "Cocoa Value Chain Specialists",
-] as const;
-
-export const HIGHLIGHTS = [
-  {
-    title: "Essential Commodity",
-    description:
-      "Cocoa remains a cornerstone of Ghana's economy—backed by global demand and strategic national importance.",
-    icon: "wheat",
-  },
-  {
-    title: "Attractive Returns",
-    description:
-      "Carefully structured instruments designed to deliver competitive, risk-adjusted yields for investors.",
-    icon: "bar-chart",
-  },
-  {
-    title: "Strong Governance",
-    description:
-      "Board oversight, regulatory compliance, and transparent reporting standards across all activities.",
-    icon: "landmark",
-  },
-  {
-    title: "Impact Driven",
-    description:
-      "Capital that strengthens the value chain while creating measurable social and economic outcomes.",
-    icon: "heart-handshake",
-  },
-] as const;
-
-export const WHY_REASONS = [
-  {
-    title: "Strong Governance",
-    description:
-      "Independent board oversight and institutional controls aligned with regulated market standards.",
-  },
-  {
-    title: "Institutional Expertise",
-    description:
-      "Decades of combined experience in capital markets, trade finance, and commodity risk.",
-  },
-  {
-    title: "Trusted Investment Manager",
-    description:
-      "A proven track record deploying capital across Ghana's cocoa ecosystem with discipline.",
-  },
-  {
-    title: "Industry Specialists",
-    description:
-      "Deep sector knowledge spanning farm gate to export—enabling sharper underwriting.",
-  },
-  {
-    title: "Technology Driven",
-    description:
-      "Digital monitoring, collateral tracking, and portfolio analytics that enhance transparency.",
-  },
-] as const;
-
-export const INVESTMENT_PRODUCTS = [
-  {
-    title: "Cocoa Bonds",
-    description:
-      "Medium-term debt instruments backed by cocoa-linked cash flows, designed for institutional and high-net-worth investors.",
-    href: "/investments/cocoa-bonds",
-    icon: "file-text",
-  },
-  {
-    title: "Commercial Paper",
-    description:
-      "Short-term money market instruments providing liquidity and competitive returns within defined tenor windows.",
-    href: "/investments/commercial-paper",
-    icon: "scroll-text",
-  },
-  {
-    title: "Private Placement",
-    description:
-      "Bespoke private offerings for qualified investors seeking exposure to selected cocoa finance programmes.",
-    href: "/investments/private-placement",
-    icon: "lock",
-  },
-  {
-    title: "Institutional Investments",
-    description:
-      "Mandate-driven solutions for pension funds, insurers, and asset managers seeking sector-aligned allocation.",
-    href: "/investments/institutional",
-    icon: "briefcase",
-  },
-] as const;
-
-export const FUNDING_STEPS = [
-  {
-    title: "Working Capital",
-    description:
-      "Seasonal liquidity for licensed buying companies and aggregators to finance cocoa purchases.",
-  },
-  {
-    title: "Warehouse Finance",
-    description:
-      "Collateralised facilities secured against graded, insured cocoa stocks held in approved warehouses.",
-  },
-  {
-    title: "Trade Finance",
-    description:
-      "Export and import trade solutions supporting documentation, logistics, and settlement cycles.",
-  },
-  {
-    title: "Supply Chain Finance",
-    description:
-      "Programme finance that connects upstream producers with downstream processors and exporters.",
-  },
-] as const;
-
-export const ESG_PILLARS = [
-  {
-    title: "Environmental",
-    description:
-      "Supporting climate-smart agriculture, deforestation-free sourcing, and responsible land stewardship.",
-    icon: "tree-pine",
-  },
-  {
-    title: "Social",
-    description:
-      "Advancing farmer livelihoods, community development, and inclusive participation across the value chain.",
-    icon: "users",
-  },
-  {
-    title: "Governance",
-    description:
-      "Upholding transparency, ethical conduct, and accountable decision-making in every capital deployment.",
-    icon: "scale",
-  },
-] as const;
-
-export const NEWS_ITEMS = [
-  {
-    date: "MAY 24, 2024",
-    isoDate: "2024-05-24",
-    title: "Cocoa Capital Announces GH₵500M Bond Programme for 2024 Season",
-    href: "/news/bond-programme-2024",
-    image: "/images/beans-drying.jpg",
-    alt: "Fermented cocoa beans drying on raffia mats in rural Ghana",
-  },
-  {
-    date: "APR 12, 2024",
-    isoDate: "2024-04-12",
-    title: "Expanding Warehouse Finance Capacity Across Ashanti and Western Regions",
-    href: "/news/warehouse-finance-expansion",
-    image: "/images/warehouse-cocoa.jpg",
-    alt: "Jute sacks of cocoa stacked in a Ghanaian warehouse",
-  },
-  {
-    date: "MAR 03, 2024",
-    isoDate: "2024-03-03",
-    title: "Strategic Partnership to Strengthen Cocoa Export Logistics Corridors",
-    href: "/news/export-logistics-partnership",
-    image: "/images/port-export.jpg",
-    alt: "Container vessel loading at the port of Tema, Ghana",
-  },
-  {
-    date: "FEB 18, 2024",
-    isoDate: "2024-02-18",
-    title: "ESG Framework Update: Financing Climate-Resilient Cocoa Communities",
-    href: "/news/esg-framework-update",
-    image: "/images/farmers-cocoa.jpg",
-    alt: "Ghanaian cocoa farmers inspecting freshly harvested pods",
-  },
-] as const;
-
-export const PARTNERS = [
-  "Ghana Cocoa Board",
-  "Bank of Ghana",
-  "GSE",
-  "SEC Ghana",
-  "GCB Bank",
-  "Ecobank",
-  "Stanbic Bank",
-  "CalBank",
-  "GIPC",
-  "AfDB",
-] as const;
+/** Highlighted header action — the document library is the most-requested page. */
+export const NAV_ACTION = { label: "Downloads", href: "/downloads" };
 
 export const FOOTER_LINKS = {
-  company: [
-    { label: "About Us", href: "/about" },
-    { label: "Leadership", href: "/about/leadership" },
-    { label: "Governance", href: "/about/governance" },
-    { label: "Careers", href: "/careers" },
-    { label: "Contact", href: "/contact" },
-  ],
-  investments: [
-    { label: "Cocoa Bonds", href: "/investments/cocoa-bonds" },
-    { label: "Commercial Paper", href: "/investments/commercial-paper" },
-    { label: "Investment Notes", href: "/investments/notes" },
-    { label: "Institutional Investments", href: "/investments/institutional" },
-    { label: "How to Invest", href: "/investments/how-to-invest" },
-  ],
-  funding: [
-    { label: "Cocoa Purchase Finance", href: "/funding/purchase" },
-    { label: "Working Capital", href: "/funding/working-capital" },
-    { label: "Trade Finance", href: "/funding/trade" },
-    { label: "Warehouse Financing", href: "/funding/warehouse" },
-    { label: "Apply for Funding", href: "/funding/apply" },
+  about: [
+    { label: "About Cocoa Capital", href: "/about" },
+    { label: "Our Mandate", href: "/about/mandate" },
+    { label: "Corporate Structure", href: "/about/corporate-structure" },
+    { label: "Board of Directors", href: "/about/board" },
+    { label: "Programme Parties", href: "/about/programme-parties" },
   ],
   investor: [
-    { label: "Financial Reports", href: "/investor-centre/reports" },
-    { label: "Announcements", href: "/investor-centre/announcements" },
-    { label: "AGM Information", href: "/investor-centre/agm" },
-    { label: "Downloads", href: "/investor-centre/downloads" },
-    { label: "Shareholder Info", href: "/investor-centre/shareholders" },
+    { label: "Investor Relations", href: "/investor-relations" },
+    { label: "The Programme", href: "/investor-relations/programme" },
+    { label: "Current Issuances", href: "/investor-relations/issuances" },
+    { label: "Investor FAQs", href: "/investor-relations/faqs" },
+  ],
+  resources: [
+    { label: "Downloads", href: "/downloads" },
+    { label: "News & Announcements", href: "/news" },
+    { label: "Contact", href: "/contact" },
+  ],
+  legal: [
+    { label: "Privacy Policy", href: "/privacy" },
+    { label: "Terms of Use", href: "/terms" },
+    { label: "Disclaimer", href: "/disclaimer" },
   ],
 } as const;
+
+/**
+ * Sector and market information is not maintained on this site — the issuer
+ * should not carry responsibility for cocoa-sector data that may become stale.
+ * Visitors are directed to the official sources instead.
+ */
+export const EXTERNAL_LINKS = [
+  { label: "Ghana Cocoa Board (COCOBOD)", href: "https://cocobod.gh" },
+  { label: "Ghana Fixed Income Market", href: "https://gfim.com.gh" },
+] as const;
+
+/**
+ * Standing site-wide notice. Rendered once, in the footer.
+ * Wording covers each of the four negations required of an SPV issuer — offer,
+ * invitation, advice, guarantee — and directs reliance solely to the approved
+ * offer documents.
+ */
+export const LEGAL_DISCLAIMER =
+  "Information on this website is provided for general information only. It does not constitute an offer, an invitation to subscribe for or purchase any securities, investment advice, or any guarantee or assurance as to future performance or returns. Any investment decision should be based solely on the relevant approved offer document, including the Programme Prospectus and the Applicable Pricing Supplement.";
+
+/**
+ * Securities-specific notice for pages that carry issuance or offer terms.
+ * Deliberately distinct from LEGAL_DISCLAIMER so the two never read as the
+ * same paragraph printed twice on one screen.
+ */
+export const SECURITIES_NOTICE =
+  "Securities are offered solely pursuant to the Programme Prospectus and the Applicable Pricing Supplement, and only in jurisdictions where such offers are lawful. Those documents prevail over website content in the event of any inconsistency.";

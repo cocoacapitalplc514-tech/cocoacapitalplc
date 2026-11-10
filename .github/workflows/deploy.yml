@@ -1,0 +1,51 @@
+name: Build and deploy to Bluehost
+
+on:
+  push:
+    branches: [main]
+  # Sent by the Sanity webhook when content is published (see README).
+  repository_dispatch:
+    types: [sanity-publish]
+  workflow_dispatch:
+
+# One deploy at a time; a newer pending run replaces older pending ones.
+# In-progress uploads are never cancelled, so the live site is not left half-updated.
+concurrency:
+  group: deploy-bluehost
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build (syncs Sanity content first)
+        run: npm run build
+        env:
+          SANITY_PROJECT_ID: ${{ vars.SANITY_PROJECT_ID || '1jndvjps' }}
+          SANITY_DATASET: ${{ vars.SANITY_DATASET || 'production' }}
+          SANITY_API_READ_TOKEN: ${{ secrets.SANITY_API_READ_TOKEN }}
+
+      - name: Upload to Bluehost
+        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          # Verify the server certificate so the FTP password cannot be intercepted.
+          security: strict
+          local-dir: ./out/
+          server-dir: ${{ vars.FTP_SERVER_DIR || 'public_html/' }}

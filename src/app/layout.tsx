@@ -1,12 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, DM_Sans } from "next/font/google";
+import { Cormorant_Garamond, Manrope } from "next/font/google";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { SITE } from "@/lib/constants";
 import "./globals.css";
 
-const dmSans = DM_Sans({
+const manrope = Manrope({
   variable: "--font-body",
   subsets: ["latin"],
   display: "swap",
@@ -24,27 +24,27 @@ export const viewport: Viewport = {
   initialScale: 1,
   viewportFit: "cover",
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#faf8f4" },
-    { media: "(prefers-color-scheme: dark)", color: "#2c1b12" },
+    { media: "(prefers-color-scheme: light)", color: "#FAF8F2" },
+    { media: "(prefers-color-scheme: dark)", color: "#3B2418" },
   ],
 };
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   title: {
-    default: `${SITE.name} | Financing Ghana's Cocoa Future`,
+    default: `${SITE.name} | Structured capital for Ghana’s cocoa sector`,
     template: `%s | ${SITE.name}`,
   },
   description: SITE.description,
   keywords: [
     "Cocoa Capital PLC",
-    "Ghana investment",
-    "cocoa finance",
-    "structured finance Ghana",
-    "cocoa bonds",
-    "institutional investment",
-    "warehouse finance",
-    "trade finance Ghana",
+    "COCOBOD",
+    "Ghana Fixed Income Market",
+    "Commercial Paper",
+    "Bonds",
+    "Note Issuance Programme",
+    "cocoa financing Ghana",
+    "investor relations",
   ],
   authors: [{ name: SITE.name }],
   creator: SITE.name,
@@ -54,20 +54,20 @@ export const metadata: Metadata = {
     locale: "en_GH",
     url: SITE.url,
     siteName: SITE.name,
-    title: `${SITE.name} | Financing Ghana's Cocoa Future`,
+    title: `${SITE.name} | Structured capital for Ghana’s cocoa sector`,
     description: SITE.description,
     images: [
       {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: `${SITE.name} — Financing Ghana's Cocoa Future`,
+        alt: `${SITE.name} — Structured capital for Ghana’s cocoa sector`,
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: `${SITE.name} | Financing Ghana's Cocoa Future`,
+    title: `${SITE.name} | Structured capital for Ghana’s cocoa sector`,
     description: SITE.description,
     images: ["/og-image.jpg"],
   },
@@ -94,7 +94,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${dmSans.variable} ${cormorant.variable} min-h-screen bg-cream font-sans text-cocoa antialiased`}
+        className={`${manrope.variable} ${cormorant.variable} min-h-screen bg-cream font-sans text-cocoa antialiased`}
       >
         <JsonLd />
         <a

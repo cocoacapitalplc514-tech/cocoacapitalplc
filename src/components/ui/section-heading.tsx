@@ -13,37 +13,27 @@ export function SectionHeading({
   eyebrow,
   title,
   description,
-  align = "center",
+  align = "left",
   className,
   light = false,
 }: SectionHeadingProps) {
   return (
     <div
       className={cn(
-        "max-w-2xl",
         align === "center" && "mx-auto text-center",
+        "max-w-3xl",
         className
       )}
     >
-      {(eyebrow || align === "center") && (
-        <div
+      {eyebrow && (
+        <p
           className={cn(
-            "mb-5 flex items-center gap-3",
-            align === "center" && "justify-center"
+            "label mb-3 font-sans",
+            light ? "text-gold" : "text-forest"
           )}
         >
-          <span className="gold-rule" aria-hidden />
-          {eyebrow && (
-            <span
-              className={cn(
-                "text-xs font-semibold uppercase tracking-[0.2em]",
-                light ? "text-gold" : "text-[#9a7528]"
-              )}
-            >
-              {eyebrow}
-            </span>
-          )}
-        </div>
+          {eyebrow}
+        </p>
       )}
       <h2
         className={cn(
@@ -53,11 +43,18 @@ export function SectionHeading({
       >
         {title}
       </h2>
+      <div
+        className={cn(
+          "gold-rule mt-5",
+          align === "center" && "mx-auto"
+        )}
+      />
       {description && (
         <p
           className={cn(
-            "mt-5 text-base font-medium leading-relaxed md:text-lg",
-            light ? "text-white/90" : "text-muted"
+            "mt-5 copy max-w-2xl leading-relaxed",
+            light ? "text-white/80" : "text-muted",
+            align === "center" && "mx-auto"
           )}
         >
           {description}

@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
-import { MapPin, Phone, Mail } from "lucide-react";
 import { PageHero } from "@/components/layout/PageHero";
+import { ContactDetails } from "@/components/layout/ContactDetails";
 import { ContactForm } from "@/components/sections/ContactForm";
-import { SITE } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Speak with the Cocoa Capital PLC team in Accra about investment products or structured funding.",
+    "Contact Cocoa Capital PLC at KPMG Ghana, Marlin House, Abelemkpe, Accra.",
 };
 
 export default function ContactPage() {
@@ -15,46 +14,33 @@ export default function ContactPage() {
     <main id="main-content">
       <PageHero
         eyebrow="Contact"
-        title="Speak with our team."
-        description="Our Accra office responds to investor and funding enquiries within two business days."
+        title="Contact Cocoa Capital PLC"
+        description="Correspondence address, telephone and office hours."
+        breadcrumbs={[{ label: "Home", href: "/" }, { label: "Contact" }]}
       />
 
       <section className="section-pad bg-cream">
-        <div className="container-site grid gap-10 sm:gap-14 lg:grid-cols-[1fr_1.4fr] lg:gap-20">
+        <div className="container-site grid gap-12 lg:grid-cols-[1fr_1.3fr] lg:gap-16">
           <div>
-            <span className="gold-rule mb-6 block" aria-hidden />
-            <h2 className="font-serif text-2xl text-cocoa">Head Office</h2>
-            <ul className="copy mt-8 space-y-6 text-muted">
-              <li className="flex gap-4">
-                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-gold" />
-                <span>
-                  {SITE.address.street}
-                  <br />
-                  {SITE.address.city}, {SITE.address.country}
-                </span>
-              </li>
-              <li className="flex items-center gap-4">
-                <Phone className="h-4 w-4 shrink-0 text-gold" />
-                <a
-                  href={`tel:${SITE.phone.replace(/\s/g, "")}`}
-                  className="tap-target hover:text-cocoa"
-                >
-                  {SITE.phone}
-                </a>
-              </li>
-              <li className="flex items-center gap-4">
-                <Mail className="h-4 w-4 shrink-0 text-gold" />
-                <a href={`mailto:${SITE.email}`} className="tap-target hover:text-cocoa">
-                  {SITE.email}
-                </a>
-              </li>
-            </ul>
-            <p className="copy mt-10 text-muted">
-              Office hours: Monday to Friday, 08:30–17:00 GMT.
-            </p>
+            <div className="border-l-2 border-gold bg-white px-6 py-7">
+              <h2 className="label font-sans text-forest">Contact</h2>
+              <p className="mt-3 text-sm leading-relaxed text-muted">
+                Investor relations, media and general enquiries — including
+                prospectus, issuance and documentation requests — are handled
+                at this address.
+              </p>
+              <ContactDetails className="mt-6" />
+            </div>
           </div>
 
-          <ContactForm />
+          <div>
+            <h2 className="font-serif text-2xl text-cocoa">Send an enquiry</h2>
+            <p className="mb-6 mt-2 text-sm text-muted">
+              Complete the form and we will open a pre-addressed message in your
+              email application.
+            </p>
+            <ContactForm />
+          </div>
         </div>
       </section>
     </main>

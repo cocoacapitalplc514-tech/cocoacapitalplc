@@ -4,15 +4,15 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 rounded-md text-center text-sm font-medium tracking-wide uppercase transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 text-center text-sm font-medium transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
         default:
-          "bg-cocoa text-white hover:bg-[#3a2518] shadow-sm hover:shadow-md",
+          "bg-cocoa text-white hover:bg-[#4a3020]",
         forest:
-          "bg-forest text-white hover:bg-[#2d4f32] shadow-sm hover:shadow-md",
-        gold: "bg-gold text-cocoa hover:bg-[#d4a84a] shadow-sm hover:shadow-md",
+          "bg-forest text-white hover:bg-[#2a4f36]",
+        gold: "bg-gold text-cocoa hover:bg-[#c49a45]",
         outline:
           "border border-gold bg-transparent text-gold hover:bg-gold/10",
         "outline-cocoa":
