@@ -107,7 +107,7 @@ certificate, which is issued for `*.bluehost.com`, not for
 
 **3. Rebuild on publish (sanity.io/manage → API → Webhooks → Create webhook).**
 
-- URL: `https://api.github.com/repos/BrightArhin/cocoaplc/dispatches`
+- URL: `https://api.github.com/repos/cocoacapitalplc514-tech/cocoacapitalplc/dispatches`
 - Dataset: `production`; Trigger on: Create, Update, Delete; Drafts: off
 - Filter: `!(_type in ["sanity.imageAsset", "sanity.fileAsset"])` (skips
   image/file uploads, which go live together with the document using them)
