@@ -207,7 +207,8 @@ ${headerBlocks}
 <IfModule mod_expires.c>
   ExpiresActive On
   ExpiresDefault "access plus 24 hours"
-  ExpiresByType text/html "access plus 2 hours"
+  # Pages change on every CMS publish, so browsers revalidate HTML on each visit.
+  ExpiresByType text/html "access plus 0 seconds"
   ExpiresByType image/jpeg "access plus 24 hours"
   ExpiresByType image/png "access plus 24 hours"
   ExpiresByType image/webp "access plus 24 hours"

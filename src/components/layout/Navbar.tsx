@@ -240,7 +240,8 @@ function UtilityBar() {
   );
 }
 
-export function Navbar() {
+/** `items` is resolved on the server (see src/lib/navigation.ts). */
+export function Navbar({ items = NAV_ITEMS }: { items?: NavItem[] }) {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
@@ -323,7 +324,7 @@ export function Navbar() {
             className="ml-auto hidden items-center lg:flex"
             aria-label="Primary"
           >
-            {NAV_ITEMS.map((item) =>
+            {items.map((item) =>
               item.children?.length ? (
                 <DesktopDropdown
                   key={item.href}
@@ -406,7 +407,7 @@ export function Navbar() {
           className="container-site flex min-h-full flex-col py-6"
           aria-label="Mobile"
         >
-          {NAV_ITEMS.map((item) => (
+          {items.map((item) => (
             <MobileAccordion
               key={item.href}
               item={item}

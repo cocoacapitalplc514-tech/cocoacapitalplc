@@ -6,6 +6,7 @@ import {
 } from "@/lib/constants";
 import { Logo } from "@/components/ui/logo";
 import { ContactDetails } from "@/components/layout/ContactDetails";
+import { FOOTER_INVESTOR_LINKS } from "@/lib/navigation";
 
 export function Footer() {
   return (
@@ -25,7 +26,7 @@ export function Footer() {
             {(
               [
                 ["About Us", FOOTER_LINKS.about],
-                ["Investor Relations", FOOTER_LINKS.investor],
+                ["Investor Relations", FOOTER_INVESTOR_LINKS],
                 ["Resources", FOOTER_LINKS.resources],
               ] as const
             ).map(([title, links]) => (

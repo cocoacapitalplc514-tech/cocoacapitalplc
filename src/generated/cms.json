@@ -52,6 +52,13 @@
   "news": [],
   "documents": [
     {
+      "fileUrl": "https://cdn.sanity.io/files/1jndvjps/production/6703901978dcb3dbf2d9915e1d3e066cfe712b0a.pdf",
+      "id": "1c8a5f95-d02b-4fea-937e-b7fa23b1f8ad",
+      "title": "Test Document",
+      "type": "announcement",
+      "fileSize": "139 KB"
+    },
+    {
       "description": "Commercial Paper issuance announcement under the GHS 16.3 billion Note Programme.",
       "fileSize": "115 KB",
       "fileUrl": "/documents/cocoa-capital-issuance-announcement.pdf",
@@ -76,6 +83,8 @@
     },
     {
       "description": "Prospectus dated 25 September 2026 relating to the offer and listing of Commercial Paper and Bonds under a GHS 16.3 billion Note Issuance Programme on the Ghana Fixed Income Market.",
+      "fileSize": "11.3 MB",
+      "fileUrl": "https://cdn.sanity.io/files/1jndvjps/production/7140f558f69b019a7e873b894114fdc1f8ae9be5.pdf",
       "id": "prog-prospectus",
       "publicationDate": "2026-09-25",
       "title": "Programme Prospectus",
@@ -517,8 +526,8 @@
   "issuances": [],
   "ratings": [],
   "publication": {
-    "prospectus": false,
-    "transactionDocuments": false
+    "prospectus": true,
+    "transactionDocuments": true
   },
   "programme": {
     "instruments": [

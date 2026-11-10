@@ -11,6 +11,9 @@ import { DOCUMENTS } from "@/data/documents";
 import { ANNOUNCEMENTS } from "@/data/announcements";
 import { RATINGS } from "@/data/ratings";
 import { FAQS } from "@/data/faqs";
+import { PUBLICATION } from "@/data/site-settings";
+import { getProspectus } from "@/data/documents";
+import { TRANSACTION_DOCUMENTS } from "@/data/transaction-documents";
 import { formatPublishedDate } from "@/lib/format";
 
 export const metadata: Metadata = {
@@ -30,6 +33,27 @@ const DISCLOSURES: Array<{
   description: string;
   count: number;
 }> = [
+  // Shown only once switched on in the CMS ("Site settings").
+  ...(PUBLICATION.prospectus
+    ? [
+        {
+          href: "/investor-relations/prospectus",
+          title: "Programme Prospectus",
+          description: "The primary disclosure document for the Programme.",
+          count: getProspectus()?.fileUrl ? 1 : 0,
+        },
+      ]
+    : []),
+  ...(PUBLICATION.transactionDocuments
+    ? [
+        {
+          href: "/investor-relations/transaction-documents",
+          title: "Transaction Documents",
+          description: "Programme agreements, available for on-screen viewing.",
+          count: TRANSACTION_DOCUMENTS.filter((d) => d.pages > 0).length,
+        },
+      ]
+    : []),
   {
     href: "/investor-relations/issuances",
     title: "Current Issuances",

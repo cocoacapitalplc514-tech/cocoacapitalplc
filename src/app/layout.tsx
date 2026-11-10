@@ -4,6 +4,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { SITE } from "@/lib/constants";
+import { NAV_ITEMS_WITH_DISCLOSURES } from "@/lib/navigation";
 import "./globals.css";
 
 const manrope = Manrope({
@@ -103,7 +104,7 @@ export default function RootLayout({
         >
           Skip to main content
         </a>
-        <Navbar />
+        <Navbar items={NAV_ITEMS_WITH_DISCLOSURES} />
         {children}
         <Footer />
       </body>
