@@ -197,6 +197,27 @@ ${rewriteRules}
 
 <IfModule mod_headers.c>
 ${headerBlocks}
+  # Next.js build assets have content-hashed names, so they never change.
+  <If "%{REQUEST_URI} =~ m#^/_next/static/#">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </If>
+</IfModule>
+
+# Browser caching (carried over from Bluehost's default configuration).
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresDefault "access plus 24 hours"
+  ExpiresByType text/html "access plus 2 hours"
+  ExpiresByType image/jpeg "access plus 24 hours"
+  ExpiresByType image/png "access plus 24 hours"
+  ExpiresByType image/webp "access plus 24 hours"
+  ExpiresByType image/svg+xml "access plus 24 hours"
+  ExpiresByType text/css "access plus 24 hours"
+  ExpiresByType text/javascript "access plus 24 hours"
+  ExpiresByType application/javascript "access plus 24 hours"
+  ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType application/pdf "access plus 1 week"
+  ExpiresByType image/x-icon "access plus 1 year"
 </IfModule>
 `;
 

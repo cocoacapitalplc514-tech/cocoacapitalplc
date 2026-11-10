@@ -7,7 +7,7 @@ import { Client } from "basic-ftp";
  * alternative to .github/workflows/deploy.yml.
  *
  * Reads FTP_SERVER, FTP_USERNAME, FTP_PASSWORD and optional FTP_SERVER_DIR
- * (default "public_html/") from .env.local / .env.
+ * (default "./", the FTP account's home folder) from .env.local / .env.
  *
  * Run with: npm run deploy   (builds first)
  */
@@ -23,7 +23,7 @@ for (const file of [".env.local", ".env"]) {
 }
 
 const { FTP_SERVER, FTP_USERNAME, FTP_PASSWORD } = process.env;
-const serverDir = process.env.FTP_SERVER_DIR || "public_html/";
+const serverDir = process.env.FTP_SERVER_DIR || "./";
 
 if (!FTP_SERVER || !FTP_USERNAME || !FTP_PASSWORD) {
   console.error("Set FTP_SERVER, FTP_USERNAME and FTP_PASSWORD in .env.local (see .env.example).");
@@ -53,7 +53,7 @@ try {
     secure: true,
   });
   console.log(`Connected to ${FTP_SERVER}. Uploading ${countFiles(LOCAL_DIR)} files from out/ to ${serverDir} ...`);
-  // Upload only; never clear the remote folder (public_html may hold host files).
+  // Upload only; never clear the remote folder (it may hold host files).
   await client.ensureDir(serverDir);
   await client.uploadFromDir(LOCAL_DIR);
   // Files changed outside the Action: make its next run upload everything.

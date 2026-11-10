@@ -89,20 +89,21 @@ two ways to deploy, and both upload `out/` over FTPS. The build writes a
   values in `.env.local` (see `.env.example`). It only adds and overwrites
   files and never deletes anything on the server.
 
-**1. FTP account (Bluehost cPanel → Files → FTP Accounts).** Create an account
-whose directory is the site root. Use the server hostname from **Configure FTP
-Client** (e.g. `boxNNNN.bluehost.com`): both deploy methods verify the TLS
-certificate, which is issued for that name rather than `ftp.<your-domain>`.
+**1. FTP account (Bluehost cPanel → Files → FTP Accounts).** The Cocoa Capital
+FTP account opens directly in the site root, so uploads go to `./`. Use the
+server hostname `sh00987.bluehost.com`: both deploy methods verify the TLS
+certificate, which is issued for `*.bluehost.com`, not for
+`ftp.uax.phr.mybluehost.me` or `ftp.<your-domain>`.
 
 **2. GitHub secrets and variables (repo → Settings → Secrets and variables → Actions).**
 
 | Name | Type | Value |
 | --- | --- | --- |
-| `FTP_SERVER` | secret | Bluehost server hostname, e.g. `boxNNNN.bluehost.com` |
+| `FTP_SERVER` | secret | `sh00987.bluehost.com` |
 | `FTP_USERNAME` | secret | the FTP account, e.g. `deploy@cocoacapital.com` |
 | `FTP_PASSWORD` | secret | the FTP password |
 | `SANITY_API_READ_TOKEN` | secret | Viewer token — required once the dataset is private |
-| `FTP_SERVER_DIR` | variable (optional) | remote folder, default `public_html/`; use `./` if the FTP account is rooted at the site folder. Must end with `/` |
+| `FTP_SERVER_DIR` | variable (optional) | remote folder relative to the FTP account's home, default `./` (the site root for this account). Must end with `/` |
 
 **3. Rebuild on publish (sanity.io/manage → API → Webhooks → Create webhook).**
 

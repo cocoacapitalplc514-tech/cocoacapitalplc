@@ -48,4 +48,4 @@ jobs:
           # Verify the server certificate so the FTP password cannot be intercepted.
           security: strict
           local-dir: ./out/
-          server-dir: ${{ vars.FTP_SERVER_DIR || 'public_html/' }}
+          server-dir: ${{ vars.FTP_SERVER_DIR || './' }}
